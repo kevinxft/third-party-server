@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json.schemastore.org/nest-cli",
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "apps/third-party-server/src",
+  "compilerOptions": {
+    "deleteOutDir": true,
+    "webpack": true,
+    "tsConfigPath": "apps/third-party-server/tsconfig.app.json"
+  },
+  "monorepo": true,
+  "root": "apps/third-party-server",
+  "projects": {
+    "third-party-server": {
+      "type": "application",
+      "root": "apps/third-party-server",
+      "entryFile": "main",
+      "sourceRoot": "apps/third-party-server/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/third-party-server/tsconfig.app.json"
+      }
+    },
+    "openai": {
+      "type": "application",
+      "root": "apps/openai",
+      "entryFile": "main",
+      "sourceRoot": "apps/openai/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/openai/tsconfig.app.json"
+      }
+    }
+  }
+}

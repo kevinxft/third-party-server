@@ -1,0 +1,23 @@
+import { Module } from '@nestjs/common';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
+import { ClientsModule, Transport } from '@nestjs/microservices';
+import { getConfig } from '../../utils';
+const { OPENAI } = getConfig();
+
+@Module({
+  imports: [
+    ClientsModule.register([
+      {
+        name: OPENAI.name,
+        transport: Transport.TCP,
+        options: {
+          port: OPENAI.port,
+        },
+      },
+    ]),
+  ],
+  controllers: [AppController],
+  providers: [AppService],
+})
+export class AppModule {}
