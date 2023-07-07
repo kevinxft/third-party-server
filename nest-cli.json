@@ -27,6 +27,15 @@
       "compilerOptions": {
         "tsConfigPath": "apps/openai/tsconfig.app.json"
       }
+    },
+    "translation": {
+      "type": "application",
+      "root": "apps/translation",
+      "entryFile": "main",
+      "sourceRoot": "apps/translation/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/translation/tsconfig.app.json"
+      }
     }
   }
 }
