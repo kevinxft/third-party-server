@@ -18,8 +18,12 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@utils": ["apps/utils/"],
-      "common": ["apps/common/"]
+      "@utils": [
+        "apps/utils/"
+      ],
+      "common": [
+        "apps/common/"
+      ]
     }
   }
 }

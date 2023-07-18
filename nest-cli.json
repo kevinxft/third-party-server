@@ -36,6 +36,15 @@
       "compilerOptions": {
         "tsConfigPath": "apps/translation/tsconfig.app.json"
       }
+    },
+    "dictionary": {
+      "type": "application",
+      "root": "apps/dictionary",
+      "entryFile": "main",
+      "sourceRoot": "apps/dictionary/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/dictionary/tsconfig.app.json"
+      }
     }
   }
 }
