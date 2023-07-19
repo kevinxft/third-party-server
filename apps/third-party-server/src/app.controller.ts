@@ -14,21 +14,21 @@ import {
 import { ClientProxy } from '@nestjs/microservices';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { TranslateBodyDto } from '../../common/dto/translateBody.dto';
-import { firstValueFrom, lastValueFrom } from 'rxjs';
-import { Word } from 'apps/dictionary/src/entities';
+import { Observable, firstValueFrom } from 'rxjs';
+import { throttle } from 'lodash';
+import { EventsGateway } from './events.gateway';
 
 @Controller()
 export class AppController {
   constructor(
     @Inject('TRANSLATION') private translationService: ClientProxy,
     @Inject('DICTIONARY') private dictionaryService: ClientProxy,
+    private readonly eventsGateway: EventsGateway,
   ) {}
 
   @Post('translate')
-  translate(@Body() body: TranslateBodyDto): Promise<string> {
-    console.log('main', body);
-    const res = this.translationService.send<string>('translate', body);
-    return lastValueFrom(res);
+  translate(@Body() body: TranslateBodyDto): Observable<string> {
+    return this.translationService.send<string>('translate', body);
   }
 
   @Get('dict/search')
@@ -54,6 +54,7 @@ export class AppController {
       }),
     )
     file: Express.Multer.File,
+    @Body('socketId') socketId: string,
   ) {
     const name = file.originalname.replace('.json', '');
     const str = file.buffer.toString();
@@ -69,9 +70,20 @@ export class AppController {
       }),
     );
 
-    return this.dictionaryService.send('addWords', {
-      words,
-      dict,
-    });
+    console.log(socketId);
+
+    const emitMsg = throttle(this.eventsGateway.emitMsg, 1000);
+
+    let count = 0;
+    const total = words.length;
+    for (const word of words) {
+      await firstValueFrom(
+        this.dictionaryService.send<string>('addOneWord', {
+          word,
+          dict,
+        }),
+      );
+      emitMsg(`${((count++ / total) * 100).toFixed(2)}%`);
+    }
   }
 }

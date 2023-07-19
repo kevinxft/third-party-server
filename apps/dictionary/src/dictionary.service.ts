@@ -44,15 +44,26 @@ export class DictionaryService {
     return await this.dataSource.manager.save(newDictionary);
   }
 
+  async addOneWordToDict({ word, dict }: { word: any[]; dict: any }) {
+    const newWord = Object.assign(new Word(), getValuesFormJson(word));
+    newWord.dictionary = dict;
+    try {
+      await this.dataSource.manager.save(newWord);
+      return `${newWord.name} 录入成功!`;
+    } catch (error) {
+      return `单词 ${newWord.name} 已经存在!`;
+    }
+  }
+
   async addWordToDict(words: any[], dictionary: any) {
     for (const word of words) {
       const newWord = Object.assign(new Word(), getValuesFormJson(word));
       newWord.dictionary = dictionary;
       try {
-        console.log(`录入 ${newWord.name}...`);
+        console.log(`录入单词 ${newWord.name}...`);
         await this.dataSource.manager.save(newWord);
       } catch (error) {
-        console.log('跳过重复');
+        console.log(`${newWord.name}...`);
       }
     }
     return {

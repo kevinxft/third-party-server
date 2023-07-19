@@ -17,6 +17,11 @@ export class DictionaryController {
     return this.dictionaryService.addWordToDict(body.words, body.dict);
   }
 
+  @MessagePattern('addOneWord')
+  addOneWord(body: { word: any[]; dict: any }) {
+    return this.dictionaryService.addOneWordToDict(body);
+  }
+
   @MessagePattern('search')
   seacrch(body) {
     return this.dictionaryService.search(body.name, body.bookId);

@@ -3,6 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { getConfig } from '../../utils';
+import { EventsModule } from './events.module';
 const { OPENAI, TRANSLATION, DICTIONARY } = getConfig();
 
 @Module({
@@ -30,6 +31,7 @@ const { OPENAI, TRANSLATION, DICTIONARY } = getConfig();
         },
       },
     ]),
+    EventsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
