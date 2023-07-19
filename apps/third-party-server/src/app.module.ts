@@ -3,7 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { getConfig } from '../../utils';
-const { OPENAI, TRANSLATION } = getConfig();
+const { OPENAI, TRANSLATION, DICTIONARY } = getConfig();
 
 @Module({
   imports: [
@@ -20,6 +20,13 @@ const { OPENAI, TRANSLATION } = getConfig();
         transport: Transport.TCP,
         options: {
           port: TRANSLATION.port,
+        },
+      },
+      {
+        name: DICTIONARY.name,
+        transport: Transport.TCP,
+        options: {
+          port: DICTIONARY.port,
         },
       },
     ]),

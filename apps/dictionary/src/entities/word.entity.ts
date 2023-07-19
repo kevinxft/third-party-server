@@ -1,8 +1,15 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  Index,
+} from 'typeorm';
 import { Dictionary } from './dictionary.entity';
 import { get } from 'lodash';
 
 @Entity()
+@Index(['name', 'dictionary'], { unique: true })
 export class Word {
   @PrimaryGeneratedColumn()
   id: number;
@@ -14,18 +21,18 @@ export class Word {
   name: string;
 
   @Column({ nullable: true })
-  originBookId: string;
+  bookId: string;
 
-  @Column()
+  @Column({ nullable: true })
   ukphone: string;
 
-  @Column()
+  @Column({ nullable: true })
   usphone: string;
 
-  @Column()
+  @Column({ nullable: true })
   ukspeech: string;
 
-  @Column()
+  @Column({ nullable: true })
   usspeech: string;
 
   @Column({ nullable: true, type: 'text' })
@@ -52,7 +59,7 @@ export class Word {
 
 const propMaps = [
   ['name', 'headWord'],
-  ['originBookId', 'bookId'],
+  ['bookId', 'bookId'],
   ['usphone', 'content.word.content.usphone'],
   ['ukphone', 'content.word.content.ukphone'],
   ['usspeech', 'content.word.content.usspeech'],
@@ -80,7 +87,7 @@ export const getValuesFormJson = (data: unknown) => {
   }, {});
 };
 
-export const formatResponse = (arr) => {
+export const formatResponse = (arr: any[]) => {
   return arr.map((word) => {
     const obj = {};
     Object.keys(word).forEach((key) => {

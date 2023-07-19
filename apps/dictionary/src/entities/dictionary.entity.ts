@@ -1,4 +1,10 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  OneToMany,
+  Index,
+} from 'typeorm';
 import { Word } from './word.entity';
 
 @Entity()
@@ -18,6 +24,7 @@ export class Dictionary {
   @Column({ nullable: true })
   tag: string;
 
+  @Index({ unique: true })
   @Column()
   name: string;
 

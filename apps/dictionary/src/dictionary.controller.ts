@@ -1,43 +1,35 @@
-import {
-  Controller,
-  FileTypeValidator,
-  Get,
-  MaxFileSizeValidator,
-  ParseFilePipe,
-  Post,
-  Body,
-  UploadedFile,
-  UseInterceptors,
-} from '@nestjs/common';
+import { Controller } from '@nestjs/common';
 import { DictionaryService } from './dictionary.service';
-import { FileInterceptor } from '@nestjs/platform-express';
 import { clearFrench } from './utils';
+import { MessagePattern } from '@nestjs/microservices';
 
 @Controller()
 export class DictionaryController {
   constructor(private readonly dictionaryService: DictionaryService) {}
 
-  @Get()
-  getHello() {
-    return this.dictionaryService.getHello();
+  @MessagePattern('addDict')
+  addDict(body) {
+    return this.dictionaryService.addDictionary(body);
   }
 
-  @Post('upload')
-  @UseInterceptors(FileInterceptor('file'))
-  uploadFile(
-    @UploadedFile(
-      new ParseFilePipe({
-        validators: [
-          new MaxFileSizeValidator({ maxSize: 1000 * 1000 }),
-          new FileTypeValidator({ fileType: 'json' }),
-        ],
-      }),
-    )
-    file: Express.Multer.File,
-    @Body() body,
-  ) {
-    const str = clearFrench(file.buffer.toString());
-    const arr = JSON.parse(str);
-    this.dictionaryService.addDictionaryAndWords(body.name, arr);
+  @MessagePattern('addWords')
+  addWords(body) {
+    return this.dictionaryService.addWordToDict(body.words, body.dict);
+  }
+
+  @MessagePattern('search')
+  seacrch(body) {
+    return this.dictionaryService.search(body.name, body.bookId);
+  }
+
+  @MessagePattern('list')
+  getDictionaryList() {
+    return this.dictionaryService.getDictList();
+  }
+
+  @MessagePattern('toArray')
+  toArray(str) {
+    const res = clearFrench(str);
+    return JSON.parse(res);
   }
 }
