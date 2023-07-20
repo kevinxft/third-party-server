@@ -16,5 +16,6 @@ async function bootstrap() {
     },
   );
   await app.listen();
+  console.log('Translation microservice is listening');
 }
 bootstrap();

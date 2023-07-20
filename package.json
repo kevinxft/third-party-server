@@ -6,7 +6,8 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "build": "nest build",
+    "pm2": "nest build && pm2 start ecosystem.config.js --env test",
+    "build": "nest build && nest build openai && nest build translation && nest build dictionary",
     "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
     "dev:openai": "cross-env ENV=dev nest start openai --watch",
     "dev:translation": "cross-env ENV=dev nest start translation --watch",
@@ -27,6 +28,7 @@
     "@nestjs/axios": "^3.0.0",
     "@nestjs/common": "^10.0.0",
     "@nestjs/core": "^10.0.0",
+    "@nestjs/mapped-types": "*",
     "@nestjs/microservices": "^10.0.5",
     "@nestjs/platform-express": "^10.0.0",
     "@nestjs/platform-socket.io": "^10.1.0",

@@ -20,7 +20,7 @@ const azureHeaders = {
 export class TranslationService {
   constructor(private readonly httpService: HttpService) {}
 
-  async translate(text): Promise<any> {
+  async translate(text: string): Promise<any> {
     const data = await this.fetch(translationUrl, [{ text }], azureHeaders);
     return data;
   }
@@ -30,7 +30,7 @@ export class TranslationService {
     return data;
   }
 
-  async fetch(url, payload, headers): Promise<any> {
+  async fetch(url: string, payload: any, headers: any): Promise<any> {
     const { data } = await firstValueFrom(
       this.httpService.post(url, payload, { headers }).pipe(
         catchError((err: AxiosError) => {
