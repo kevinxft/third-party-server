@@ -72,7 +72,10 @@ export class AppController {
 
     console.log(socketId);
 
-    const emitMsg = throttle(this.eventsGateway.emitMsg, 1000);
+    const broadcast = (msg: string) => {
+      this.eventsGateway.emitMsg(msg);
+    };
+    const emitMsg = throttle(broadcast, 1000);
 
     let count = 0;
     const total = words.length;
