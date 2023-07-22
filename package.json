@@ -6,7 +6,8 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "dep": "nest build && nest build openai && nest build translation && nest build dictionary && pm2 start ecosystem.config.js --env test",
+    "dep:pro": "nest build && nest build openai && nest build translation && nest build dictionary && pm2 start ecosystem.config.js --env pro",
+    "dep:test": "nest build && nest build openai && nest build translation && nest build dictionary && pm2 start ecosystem.config.js --env test",
     "build": "nest build && nest build openai && nest build translation && nest build dictionary",
     "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
     "dev:openai": "cross-env ENV=dev nest start openai --watch",
