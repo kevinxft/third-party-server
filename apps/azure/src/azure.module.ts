@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { TranslationController } from './translation.controller';
-import { TranslationService } from './translation.service';
+import { AzureController } from './azure.controller';
+import { AzureService } from './azure.service';
 import { HttpModule } from '@nestjs/axios';
 import { getConfig } from '@utils';
 
@@ -13,7 +13,7 @@ const { HTTP_CONFIG } = getConfig();
       maxRedirects: HTTP_CONFIG.maxRedirects,
     }),
   ],
-  controllers: [TranslationController],
-  providers: [TranslationService],
+  controllers: [AzureController],
+  providers: [AzureService],
 })
-export class TranslationModule {}
+export class AzureModule {}

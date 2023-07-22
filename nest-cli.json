@@ -28,13 +28,13 @@
         "tsConfigPath": "apps/openai/tsconfig.app.json"
       }
     },
-    "translation": {
+    "azure": {
       "type": "application",
-      "root": "apps/translation",
+      "root": "apps/azure",
       "entryFile": "main",
-      "sourceRoot": "apps/translation/src",
+      "sourceRoot": "apps/azure/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/translation/tsconfig.app.json"
+        "tsConfigPath": "apps/azure/tsconfig.app.json"
       }
     },
     "dictionary": {

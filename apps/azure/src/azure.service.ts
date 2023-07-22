@@ -4,12 +4,11 @@ import { getConfig } from '@utils';
 import { catchError, firstValueFrom } from 'rxjs';
 import { AxiosError } from 'axios';
 
-const { TRANSLATION } = getConfig();
-const azure = TRANSLATION.services.azure;
-const translationUrl = azure.translationUrl;
-const dictionaryUrl = azure.dictionaryUrl;
-const [secrect, secrectValue] = azure.headerKey.split(':');
-const [region, regionValue] = azure.headerRegion.split(':');
+const { AZURE } = getConfig();
+const dictionaryUrl = AZURE.dictionaryUrl;
+const translationUrl = AZURE.translationUrl;
+const [secrect, secrectValue] = AZURE.headerKey.split(':');
+const [region, regionValue] = AZURE.headerRegion.split(':');
 const azureHeaders = {
   [secrect]: secrectValue,
   [region]: regionValue,
@@ -17,7 +16,7 @@ const azureHeaders = {
 };
 
 @Injectable()
-export class TranslationService {
+export class AzureService {
   constructor(private readonly httpService: HttpService) {}
 
   async translate(text: string): Promise<any> {

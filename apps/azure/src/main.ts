@@ -1,21 +1,21 @@
 import { NestFactory } from '@nestjs/core';
-import { TranslationModule } from './translation.module';
+import { AzureModule } from './azure.module';
 import { getConfig } from '@utils';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 
-const { TRANSLATION } = getConfig();
+const { AZURE } = getConfig();
 
 async function bootstrap() {
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(
-    TranslationModule,
+    AzureModule,
     {
       transport: Transport.TCP,
       options: {
-        port: TRANSLATION.port,
+        port: AZURE.port,
       },
     },
   );
   await app.listen();
-  console.log('Translation microservice is listening');
+  console.log('Azure microservice is listening');
 }
 bootstrap();

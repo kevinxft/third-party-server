@@ -4,7 +4,7 @@ import { AppService } from './app.service';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { getConfig } from '../../utils';
 import { EventsModule } from './events.module';
-const { OPENAI, TRANSLATION, DICTIONARY } = getConfig();
+const { OPENAI, AZURE, DICTIONARY } = getConfig();
 
 @Module({
   imports: [
@@ -17,10 +17,10 @@ const { OPENAI, TRANSLATION, DICTIONARY } = getConfig();
         },
       },
       {
-        name: TRANSLATION.name,
+        name: AZURE.name,
         transport: Transport.TCP,
         options: {
-          port: TRANSLATION.port,
+          port: AZURE.port,
         },
       },
       {

@@ -19,8 +19,8 @@ module.exports = {
     },
     {
       ...ENV_CONFIG,
-      name: 'translation',
-      script: './dist/apps/translation/main.js',
+      name: 'azure',
+      script: './dist/apps/azure/main.js',
     },
     {
       ...ENV_CONFIG,

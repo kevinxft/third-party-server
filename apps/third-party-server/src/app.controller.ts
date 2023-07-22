@@ -21,14 +21,14 @@ import { EventsGateway } from './events.gateway';
 @Controller()
 export class AppController {
   constructor(
-    @Inject('TRANSLATION') private translationService: ClientProxy,
+    @Inject('AZURE') private azureService: ClientProxy,
     @Inject('DICTIONARY') private dictionaryService: ClientProxy,
     private readonly eventsGateway: EventsGateway,
   ) {}
 
   @Post('translate')
   translate(@Body() body: TranslateBodyDto): Observable<string> {
-    return this.translationService.send<string>('translate', body);
+    return this.azureService.send<string>('translate', body);
   }
 
   @Get('dict/search')
