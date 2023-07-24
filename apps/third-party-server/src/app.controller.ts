@@ -26,6 +26,11 @@ export class AppController {
     private readonly eventsGateway: EventsGateway,
   ) {}
 
+  @Get('test')
+  test() {
+    return this.dictionaryService.send<string>('isWord', 'fisher');
+  }
+
   @Post('translate')
   translate(@Body() body: TranslateBodyDto): Observable<string> {
     return this.azureService.send<string>('translate', body);
@@ -61,7 +66,8 @@ export class AppController {
     const words = await firstValueFrom(
       this.dictionaryService.send<any>('toArray', str),
     );
-    const bookId = words[0].bookId;
+    // TODO: 这里需要优化
+    const bookId = words[0]?.bookId || name;
     const dict = await firstValueFrom(
       this.dictionaryService.send<string>('addDict', {
         name,

@@ -15,6 +15,15 @@ export class DictionaryService {
     };
   }
 
+  async isWord(name: string): Promise<boolean> {
+    const res = await this.dataSource
+      .getRepository(Word)
+      .createQueryBuilder()
+      .where('name = :name', { name })
+      .getCount();
+    return res > 0;
+  }
+
   async search(name: string, bookId?: string): Promise<any> {
     const where: { name: string; bookId?: string } = { name: name.trim() };
     if (bookId) {
@@ -104,5 +113,14 @@ export class DictionaryService {
       name,
     });
     return !!dict;
+  }
+
+  async saveWordFromAPI(word) {
+    return await this.dataSource
+      .getRepository(Word)
+      .createQueryBuilder()
+      .insert()
+      .values([word])
+      .execute();
   }
 }

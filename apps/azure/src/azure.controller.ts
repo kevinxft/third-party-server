@@ -7,12 +7,17 @@ export class AzureController {
   constructor(private readonly azureService: AzureService) {}
 
   @MessagePattern('translate')
-  async translate(text: string): Promise<any> {
+  translate(text: string): Promise<any> {
     return this.azureService.translate(text);
   }
 
   @MessagePattern('dictionarize')
   dictionarize(word: string): Promise<any> {
     return this.azureService.dictionarize(word);
+  }
+
+  @MessagePattern('isAzureWord')
+  isWord(word: string): Promise<boolean> {
+    return this.azureService.isWord(word);
   }
 }

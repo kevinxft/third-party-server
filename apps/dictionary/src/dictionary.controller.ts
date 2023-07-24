@@ -27,6 +27,11 @@ export class DictionaryController {
     return this.dictionaryService.search(body.name, body.bookId);
   }
 
+  @MessagePattern('isDictWord')
+  isDictWord(word: string) {
+    return this.dictionaryService.isWord(word);
+  }
+
   @MessagePattern('list')
   getDictionaryList() {
     return this.dictionaryService.getDictList();
@@ -34,7 +39,11 @@ export class DictionaryController {
 
   @MessagePattern('toArray')
   toArray(str) {
-    const res = clearFrench(str);
-    return JSON.parse(res);
+    return JSON.parse(clearFrench(str));
+  }
+
+  @MessagePattern('saveFromAPI')
+  saveWordFromAPI(word) {
+    return this.dictionaryService.saveWordFromAPI(word);
   }
 }
