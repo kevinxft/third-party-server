@@ -19,13 +19,15 @@ export class DictionaryService {
     const res = await this.dataSource
       .getRepository(Word)
       .createQueryBuilder()
-      .where('name = :name', { name })
+      .where('name = :name', { name: name.toLowerCase() })
       .getCount();
     return res > 0;
   }
 
   async search(name: string, bookId?: string): Promise<any> {
-    const where: { name: string; bookId?: string } = { name: name.trim() };
+    const where: { name: string; bookId?: string } = {
+      name: name.trim().toLowerCase(),
+    };
     if (bookId) {
       where.bookId = bookId;
     }
