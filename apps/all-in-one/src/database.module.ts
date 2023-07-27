@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { getConfig } from 'apps/utils';
-import { Dictionary, Word } from './entities';
+import { Dictionary, Word } from './dictionary/entities';
 import { DataSource } from 'typeorm';
 
 const { MYSQL_CONFIG } = getConfig();

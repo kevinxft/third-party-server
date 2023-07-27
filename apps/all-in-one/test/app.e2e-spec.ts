@@ -1,14 +1,14 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
-import { OpenaiModule } from './../src/openai.module';
+import { AllInOneModule } from './../src/all-in-one.module';
 
-describe('OpenaiController (e2e)', () => {
+describe('AllInOneController (e2e)', () => {
   let app: INestApplication;
 
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [OpenaiModule],
+      imports: [AllInOneModule],
     }).compile();
 
     app = moduleFixture.createNestApplication();

@@ -14,8 +14,8 @@ module.exports = {
   apps: [
     {
       ...ENV_CONFIG,
-      name: 'openai',
-      script: './dist/apps/openai/main.js',
+      name: 'weixin',
+      script: './dist/apps/weixin/main.js',
     },
     {
       ...ENV_CONFIG,

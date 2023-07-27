@@ -1,12 +1,12 @@
 import { Controller, Get } from '@nestjs/common';
 import { OpenaiService } from './openai.service';
 
-@Controller()
+@Controller('openai')
 export class OpenaiController {
   constructor(private readonly openaiService: OpenaiService) {}
 
-  @Get()
-  getHello(): string {
-    return this.openaiService.getHello();
+  @Get('chat')
+  async makeSentence() {
+    return 'chat';
   }
 }

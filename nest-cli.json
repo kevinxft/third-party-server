@@ -19,15 +19,6 @@
         "tsConfigPath": "apps/third-party-server/tsconfig.app.json"
       }
     },
-    "openai": {
-      "type": "application",
-      "root": "apps/openai",
-      "entryFile": "main",
-      "sourceRoot": "apps/openai/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/openai/tsconfig.app.json"
-      }
-    },
     "azure": {
       "type": "application",
       "root": "apps/azure",
@@ -44,6 +35,15 @@
       "sourceRoot": "apps/dictionary/src",
       "compilerOptions": {
         "tsConfigPath": "apps/dictionary/tsconfig.app.json"
+      }
+    },
+    "all-in-one": {
+      "type": "application",
+      "root": "apps/all-in-one",
+      "entryFile": "main",
+      "sourceRoot": "apps/all-in-one/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/all-in-one/tsconfig.app.json"
       }
     }
   }

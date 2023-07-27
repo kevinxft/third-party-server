@@ -21,30 +21,29 @@ import { EventsGateway } from './events.gateway';
 @Controller()
 export class AppController {
   constructor(
-    @Inject('AZURE') private azureService: ClientProxy,
-    @Inject('DICTIONARY') private dictionaryService: ClientProxy,
+    @Inject('ALL_IN_ONE') private allInOneService: ClientProxy,
     private readonly eventsGateway: EventsGateway,
   ) {}
 
   @Get('test')
   test() {
-    return this.dictionaryService.send<string>('isWord', 'fisher');
+    return this.allInOneService.send<string>('isWord', 'fisher');
   }
 
   @Post('translate')
   translate(@Body() body: TranslateBodyDto): Observable<string> {
-    return this.azureService.send<string>('translate', body);
+    return this.allInOneService.send<string>('translate', body);
   }
 
   @Get('dict/search')
   async search(@Query() query: any) {
-    const data = await this.dictionaryService.send<string>('search', query);
+    const data = await this.allInOneService.send<string>('search', query);
     return data;
   }
 
   @Get('dict/list')
   async getDictionaryList() {
-    return await this.dictionaryService.send<string>('list', '');
+    return await this.allInOneService.send<string>('list', '');
   }
 
   @Post('dict/upload')
@@ -64,12 +63,12 @@ export class AppController {
     const name = file.originalname.replace('.json', '');
     const str = file.buffer.toString();
     const words = await firstValueFrom(
-      this.dictionaryService.send<any>('toArray', str),
+      this.allInOneService.send<any>('toArray', str),
     );
     // TODO: 这里需要优化
     const bookId = words[0]?.bookId || name;
     const dict = await firstValueFrom(
-      this.dictionaryService.send<string>('addDict', {
+      this.allInOneService.send<string>('addDict', {
         name,
         bookId,
         count: words.length,
@@ -87,7 +86,7 @@ export class AppController {
     const total = words.length;
     for (const word of words) {
       await firstValueFrom(
-        this.dictionaryService.send<string>('addOneWord', {
+        this.allInOneService.send<string>('addOneWord', {
           word,
           dict,
         }),

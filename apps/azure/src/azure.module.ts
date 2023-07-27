@@ -5,6 +5,7 @@ import { HttpModule } from '@nestjs/axios';
 import { DictionaryModule } from 'apps/dictionary/src/dictionary.module';
 import { getConfig } from '../../utils';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { OpenaiModule } from './openai/openai.module';
 const { DICTIONARY } = getConfig();
 
 const { HTTP_CONFIG } = getConfig();
@@ -25,6 +26,7 @@ const { HTTP_CONFIG } = getConfig();
       },
     ]),
     DictionaryModule,
+    OpenaiModule,
   ],
   controllers: [AzureController],
   providers: [AzureService],

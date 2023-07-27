@@ -4,30 +4,16 @@ import { AppService } from './app.service';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { getConfig } from '../../utils';
 import { EventsModule } from './events.module';
-const { OPENAI, AZURE, DICTIONARY } = getConfig();
+const { ALL_IN_ONE } = getConfig();
 
 @Module({
   imports: [
     ClientsModule.register([
       {
-        name: OPENAI.name,
+        name: ALL_IN_ONE.name,
         transport: Transport.TCP,
         options: {
-          port: OPENAI.port,
-        },
-      },
-      {
-        name: AZURE.name,
-        transport: Transport.TCP,
-        options: {
-          port: AZURE.port,
-        },
-      },
-      {
-        name: DICTIONARY.name,
-        transport: Transport.TCP,
-        options: {
-          port: DICTIONARY.port,
+          port: ALL_IN_ONE.port,
         },
       },
     ]),
