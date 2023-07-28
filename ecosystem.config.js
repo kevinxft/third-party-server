@@ -14,18 +14,8 @@ module.exports = {
   apps: [
     {
       ...ENV_CONFIG,
-      name: 'weixin',
-      script: './dist/apps/weixin/main.js',
-    },
-    {
-      ...ENV_CONFIG,
-      name: 'azure',
-      script: './dist/apps/azure/main.js',
-    },
-    {
-      ...ENV_CONFIG,
-      name: 'dictionary',
-      script: './dist/apps/dictionary/main.js',
+      name: 'all-in-one',
+      script: './dist/apps/all-in-one/main.js',
     },
     {
       ...ENV_CONFIG,

@@ -1,14 +1,14 @@
 {
   "$schema": "https://json.schemastore.org/nest-cli",
   "collection": "@nestjs/schematics",
-  "sourceRoot": "apps/third-party-server/src",
+  "sourceRoot": "apps/all-in-one/src",
   "compilerOptions": {
     "deleteOutDir": true,
     "webpack": true,
-    "tsConfigPath": "apps/third-party-server/tsconfig.app.json"
+    "tsConfigPath": "apps/al-in-one/tsconfig.app.json"
   },
   "monorepo": true,
-  "root": "apps/third-party-server",
+  "root": "apps/all-in-one",
   "projects": {
     "third-party-server": {
       "type": "application",
@@ -17,24 +17,6 @@
       "sourceRoot": "apps/third-party-server/src",
       "compilerOptions": {
         "tsConfigPath": "apps/third-party-server/tsconfig.app.json"
-      }
-    },
-    "azure": {
-      "type": "application",
-      "root": "apps/azure",
-      "entryFile": "main",
-      "sourceRoot": "apps/azure/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/azure/tsconfig.app.json"
-      }
-    },
-    "dictionary": {
-      "type": "application",
-      "root": "apps/dictionary",
-      "entryFile": "main",
-      "sourceRoot": "apps/dictionary/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/dictionary/tsconfig.app.json"
       }
     },
     "all-in-one": {
