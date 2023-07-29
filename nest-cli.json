@@ -5,20 +5,11 @@
   "compilerOptions": {
     "deleteOutDir": true,
     "webpack": true,
-    "tsConfigPath": "apps/al-in-one/tsconfig.app.json"
+    "tsConfigPath": "apps/all-in-one/tsconfig.app.json"
   },
   "monorepo": true,
   "root": "apps/all-in-one",
   "projects": {
-    "third-party-server": {
-      "type": "application",
-      "root": "apps/third-party-server",
-      "entryFile": "main",
-      "sourceRoot": "apps/third-party-server/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/third-party-server/tsconfig.app.json"
-      }
-    },
     "all-in-one": {
       "type": "application",
       "root": "apps/all-in-one",
@@ -26,6 +17,15 @@
       "sourceRoot": "apps/all-in-one/src",
       "compilerOptions": {
         "tsConfigPath": "apps/all-in-one/tsconfig.app.json"
+      }
+    },
+    "admin": {
+      "type": "application",
+      "root": "apps/admin",
+      "entryFile": "main",
+      "sourceRoot": "apps/admin/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/admin/tsconfig.app.json"
       }
     }
   }

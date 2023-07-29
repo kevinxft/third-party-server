@@ -63,7 +63,7 @@ export class WeixinService {
       await this.dataSource.manager.save(user);
     }
     const userPlatform = new UserPlatform();
-    userPlatform.unionid = unionid;
+    userPlatform.union = user;
     userPlatform.platform = platform;
     await this.dataSource.manager.save(userPlatform);
   }

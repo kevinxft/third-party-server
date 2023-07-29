@@ -125,4 +125,14 @@ export class DictionaryService {
       .values([word])
       .execute();
   }
+
+  async getRandomWords(limit: number) {
+    const words = await this.dataSource
+      .getRepository(Word)
+      .createQueryBuilder()
+      .orderBy('RAND()')
+      .limit(limit)
+      .getMany();
+    return words;
+  }
 }

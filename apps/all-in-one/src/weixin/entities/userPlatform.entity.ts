@@ -10,7 +10,7 @@ export class UserPlatform {
   platform: string;
 
   @ManyToOne(() => WeixinUser, (weixinUser) => weixinUser.unionid)
-  unionid: string;
+  union: WeixinUser;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;

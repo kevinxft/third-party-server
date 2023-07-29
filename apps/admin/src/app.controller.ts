@@ -13,7 +13,6 @@ import {
 } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { TranslateBodyDto } from '../../common/dto/translateBody.dto';
 import { Observable, firstValueFrom } from 'rxjs';
 import { throttle } from 'lodash';
 import { EventsGateway } from './events.gateway';
@@ -25,13 +24,18 @@ export class AppController {
     private readonly eventsGateway: EventsGateway,
   ) {}
 
+  @Get()
+  hello() {
+    return 'hello admin';
+  }
+
   @Get('test')
   test() {
     return this.allInOneService.send<string>('isWord', 'fisher');
   }
 
   @Post('translate')
-  translate(@Body() body: TranslateBodyDto): Observable<string> {
+  translate(@Body() body: any): Observable<string> {
     return this.allInOneService.send<string>('translate', body);
   }
 

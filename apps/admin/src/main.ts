@@ -2,11 +2,12 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { getConfig } from '../../utils';
 
-const { THIRD_PARTY_SERVER } = getConfig();
+const { ADMIN } = getConfig();
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.enableCors();
-  await app.listen(THIRD_PARTY_SERVER.port);
+  await app.listen(ADMIN.port);
+  console.log('Admin is listening at ' + ADMIN.port);
 }
 bootstrap();

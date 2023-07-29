@@ -42,6 +42,11 @@ export class DictionaryController {
     return JSON.parse(clearFrench(str));
   }
 
+  @MessagePattern('dict-getRandomWords')
+  getRandomWords(limit = 10) {
+    return this.dictionaryService.getRandomWords(limit);
+  }
+
   saveWordFromAPI(word) {
     return this.dictionaryService.saveWordFromAPI(word);
   }

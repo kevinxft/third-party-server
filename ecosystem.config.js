@@ -19,8 +19,8 @@ module.exports = {
     },
     {
       ...ENV_CONFIG,
-      name: 'third-party-server',
-      script: './dist/apps/third-party-server/main.js',
+      name: 'admin',
+      script: './dist/apps/admin/main.js',
     },
   ],
 };
