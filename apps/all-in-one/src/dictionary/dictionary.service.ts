@@ -129,7 +129,9 @@ export class DictionaryService {
   async getRandomWords(limit: number) {
     const words = await this.dataSource
       .getRepository(Word)
-      .createQueryBuilder()
+      .createQueryBuilder('word')
+      .select(['word.name'])
+      .distinctOn(['word.name'])
       .orderBy('RAND()')
       .limit(limit)
       .getMany();
