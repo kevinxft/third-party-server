@@ -20,4 +20,9 @@ export class AzureController {
   isWord(word: string): Promise<boolean> {
     return this.azureService.isWord(word);
   }
+
+  @MessagePattern('azure-makeSentence')
+  makeSentence(words: string[]) {
+    return this.azureService.makeSentence(words);
+  }
 }

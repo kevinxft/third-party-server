@@ -3,9 +3,11 @@ import { HttpService } from '@nestjs/axios';
 import { getConfig } from '@utils';
 import { catchError, firstValueFrom } from 'rxjs';
 import { AxiosError } from 'axios';
+import { OpenAIClient, AzureKeyCredential } from '@azure/openai';
 import { DictionaryService } from '../dictionary/dictionary.service';
-
+import { initMessages, toJson } from './utils';
 const { AZURE } = getConfig();
+
 const dictionaryUrl = AZURE.dictionaryUrl;
 const translationUrl = AZURE.translationUrl;
 const [secrect, secrectValue] = AZURE.headerKey.split(':');
@@ -15,6 +17,11 @@ const azureHeaders = {
   [region]: regionValue,
   'Content-Type': 'application/json',
 };
+
+const openai = new OpenAIClient(
+  AZURE.oaiEndpoint,
+  new AzureKeyCredential(AZURE.oaiApiKey),
+);
 
 @Injectable()
 export class AzureService {
@@ -66,5 +73,18 @@ export class AzureService {
       ),
     );
     return data;
+  }
+
+  async makeSentence(words: string[]) {
+    const startTime = Date.now();
+
+    const res = await openai.getChatCompletions(
+      AZURE.oaiDeploymentId,
+      initMessages(words),
+    );
+    console.log(res);
+    const sec = (Date.now() - startTime) / 1000;
+    console.log(`本次耗时${sec}秒`);
+    return toJson(res.choices[0].message.content);
   }
 }
