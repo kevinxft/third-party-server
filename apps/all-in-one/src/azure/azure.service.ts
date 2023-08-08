@@ -18,11 +18,6 @@ const azureHeaders = {
   'Content-Type': 'application/json',
 };
 
-const openai = new OpenAIClient(
-  AZURE.oaiEndpoint,
-  new AzureKeyCredential(AZURE.oaiApiKey),
-);
-
 @Injectable()
 export class AzureService {
   constructor(
@@ -76,13 +71,18 @@ export class AzureService {
   }
 
   async makeSentence(words: string[]) {
+    console.log(words);
     const startTime = Date.now();
+    const openai = new OpenAIClient(
+      AZURE.oaiEndpoint,
+      new AzureKeyCredential(AZURE.oaiApiKey),
+    );
 
     const res = await openai.getChatCompletions(
       AZURE.oaiDeploymentId,
       initMessages(words),
     );
-    console.log(res);
+    console.log('makeSentence: ', res);
     const sec = (Date.now() - startTime) / 1000;
     console.log(`本次耗时${sec}秒`);
     return toJson(res.choices[0].message.content);

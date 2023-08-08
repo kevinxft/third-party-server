@@ -1,4 +1,4 @@
-const maxhistory = 5;
+const maxhistory = 7;
 const historyMessages = [];
 
 type messageType = {
@@ -14,7 +14,7 @@ const preMessages: messageType[] = [
   },
   {
     role: 'user',
-    content: `如果有时态变化,要存一份单词的时态在tense里,返回的格式严格按照这个JSON模板 {"sentence":"","trans": "","tense":{"read":"reading","watch":"watched"},"positoins":{},"tips":""}`,
+    content: `并且对生成的句子进行语法和词法方面的分析，分析的数据放到tips中,返回的格式严格按照这个JSON模板 {"sentence":"","trans": "","positoins":{},"tips":"分析结果放到这里"}`,
   },
 ];
 
@@ -43,6 +43,7 @@ export const initMessages = (words) => {
 };
 
 export const toJson = (str) => {
+  console.log(str);
   try {
     const res = JSON.parse(str);
     addHistoryMessage(res);
