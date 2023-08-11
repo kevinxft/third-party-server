@@ -10,11 +10,7 @@ const preMessages: messageType[] = [
   {
     role: 'user',
     content:
-      '你作为一个英语教授,我会给你5个以内的单词,你需要给我提供这些单词造的一个句子,和句子的翻译',
-  },
-  {
-    role: 'user',
-    content: `并且对生成的句子进行语法和词法方面的分析，分析的数据放到tips中,返回的格式严格按照这个JSON模板 {"sentence":"","trans": "","positoins":{},"tips":"分析结果放到这里"}`,
+      '你作为一个英语教授,我会给你5个以内的单词,你需要给我提供这些单词造的一个句子，并提供翻译和句子的语法和吃法方面的分析',
   },
 ];
 
@@ -22,7 +18,7 @@ export const initUserMessage = (words: string[]) => ({
   role: 'user',
   content: `帮我用这${words.length}个单词${words.join(
     ',',
-  )}造一个英文句子放到JSON的sentence,句子的翻译放到JSON的trans,单词在句子中的位置放到JSON的positions,单词在句子中变化后的时态放到JSON的tense,没有的不放,如果你有什么补充,以中文放到JSON的tips`,
+  )}造一个英文句子放到JSON的sentence,句子的翻译放到JSON的trans,并且对生成的句子进行语法和词法方面的分析，分析的数据放到tips中,返回的格式严格按照这个JSON模板 {"sentence":"","trans": "","tips":"分析结果放到这里"}`,
 });
 
 const addHistoryMessage = (message) => {
