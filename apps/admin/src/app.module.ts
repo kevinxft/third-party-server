@@ -4,8 +4,8 @@ import { AppService } from './app.service';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { getConfig } from '../../utils';
 import { EventsModule } from './events.module';
+import { ResourceModule } from './resource/resource.module';
 const { ALL_IN_ONE } = getConfig();
-console.log(ALL_IN_ONE);
 
 @Module({
   imports: [
@@ -19,6 +19,7 @@ console.log(ALL_IN_ONE);
       },
     ]),
     EventsModule,
+    ResourceModule,
   ],
   controllers: [AppController],
   providers: [AppService],
