@@ -29,7 +29,7 @@ export class EventsGateway
     console.log(body);
   }
 
-  emitMsg(text: string) {
+  emitMsg(text: any) {
     this.server.emit('writing', text);
   }
 

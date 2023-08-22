@@ -4,10 +4,10 @@ import { Dictionary, Word } from './dictionary/entities';
 import { WeixinUser, UserPlatform } from './weixin/entities';
 import { DataSource } from 'typeorm';
 
-const { MYSQL_CONFIG } = getConfig();
+const { MYSQL_ALL_IN_ONE_CONFIG } = getConfig();
 
 const MYSQL_SOURCE = new DataSource({
-  ...MYSQL_CONFIG,
+  ...MYSQL_ALL_IN_ONE_CONFIG,
   entities: [Dictionary, Word, WeixinUser, UserPlatform],
 });
 

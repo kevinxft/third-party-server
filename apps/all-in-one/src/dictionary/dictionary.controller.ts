@@ -7,9 +7,24 @@ import { MessagePattern } from '@nestjs/microservices';
 export class DictionaryController {
   constructor(private readonly dictionaryService: DictionaryService) {}
 
-  @MessagePattern('addDict')
+  @MessagePattern('dict-add')
   addDict(body) {
     return this.dictionaryService.addDictionary(body);
+  }
+
+  @MessagePattern('dict-update')
+  updateDict(body) {
+    return this.dictionaryService.updateDictionary(body);
+  }
+
+  @MessagePattern('dict-refreshCount')
+  refreshCount(dictId: string) {
+    return this.dictionaryService.refreshCount(dictId);
+  }
+
+  @MessagePattern('dict-findByDictId')
+  findDict(bookId: string) {
+    return this.dictionaryService.findDictionary(bookId);
   }
 
   @MessagePattern('addWords')
@@ -17,8 +32,8 @@ export class DictionaryController {
     return this.dictionaryService.addWordToDict(body.words, body.dict);
   }
 
-  @MessagePattern('addOneWord')
-  addOneWord(body: { word: any[]; dict: any }) {
+  @MessagePattern('dict-addOneWord')
+  addOneWord(body: { word: any[]; dictId: string }) {
     return this.dictionaryService.addOneWordToDict(body);
   }
 
@@ -32,12 +47,12 @@ export class DictionaryController {
     return this.dictionaryService.isWord(word);
   }
 
-  @MessagePattern('list')
+  @MessagePattern('dict-list')
   getDictionaryList() {
     return this.dictionaryService.getDictList();
   }
 
-  @MessagePattern('toArray')
+  @MessagePattern('dict-StrToArray')
   toArray(str) {
     return JSON.parse(clearFrench(str));
   }

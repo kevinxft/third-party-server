@@ -10,10 +10,13 @@ import {
   MaxFileSizeValidator,
   ParseFilePipe,
   UploadedFile,
+  Put,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { Observable, firstValueFrom } from 'rxjs';
+import { firstValueFrom } from 'rxjs';
 import { throttle } from 'lodash';
 import { EventsGateway } from './events.gateway';
 
@@ -26,17 +29,7 @@ export class AppController {
 
   @Get()
   hello() {
-    return 'hello admin';
-  }
-
-  @Get('test')
-  test() {
-    return this.allInOneService.send<string>('isWord', 'fisher');
-  }
-
-  @Post('translate')
-  translate(@Body() body: any): Observable<string> {
-    return this.allInOneService.send<string>('translate', body);
+    return 'admin server is running';
   }
 
   @Get('dict/search')
@@ -47,7 +40,27 @@ export class AppController {
 
   @Get('dict/list')
   async getDictionaryList() {
-    return await this.allInOneService.send<string>('list', '');
+    return await this.allInOneService.send<string>('dict-list', '');
+  }
+
+  @Post('dict/add')
+  async addDictionary(@Body() body: any) {
+    const { name, dictId } = body;
+    return this.allInOneService.send<string>('dict-add', {
+      name,
+      dictId,
+    });
+  }
+
+  @Put('dict/update')
+  async updateDictionary(@Body() body: any) {
+    const res = await firstValueFrom(
+      this.allInOneService.send<any>('dict-update', body),
+    );
+    if (res.code) {
+      throw new HttpException(res.message, res.code);
+    }
+    return res;
   }
 
   @Post('dict/upload')
@@ -62,27 +75,25 @@ export class AppController {
       }),
     )
     file: Express.Multer.File,
-    @Body('socketId') socketId: string,
+    @Body('dictId') dictId: string,
   ) {
-    const name = file.originalname.replace('.json', '');
+    console.log(dictId);
+    const dict = await firstValueFrom(
+      this.allInOneService.send<any>('dict-findByDictId', dictId),
+    );
+    if (!dict) {
+      throw new HttpException('词典ID不存在', HttpStatus.NOT_FOUND);
+    }
+
     const str = file.buffer.toString();
     const words = await firstValueFrom(
-      this.allInOneService.send<any>('toArray', str),
+      this.allInOneService.send<any>('dict-StrToArray', str),
     );
-    // TODO: 这里需要优化
-    const bookId = words[0]?.bookId || name;
-    const dict = await firstValueFrom(
-      this.allInOneService.send<string>('addDict', {
-        name,
-        bookId,
-        count: words.length,
-      }),
-    );
-
-    console.log(socketId);
-
-    const broadcast = (msg: string) => {
-      this.eventsGateway.emitMsg(msg);
+    const broadcast = (msg: string, done = false) => {
+      this.eventsGateway.emitMsg({
+        progress: msg,
+        done,
+      });
     };
     const emitMsg = throttle(broadcast, 1000);
 
@@ -90,12 +101,16 @@ export class AppController {
     const total = words.length;
     for (const word of words) {
       await firstValueFrom(
-        this.allInOneService.send<string>('addOneWord', {
+        this.allInOneService.send<string>('dict-addOneWord', {
           word,
-          dict,
+          dictId,
         }),
       );
       emitMsg(`${((count++ / total) * 100).toFixed(2)}%`);
     }
+    await firstValueFrom(
+      this.allInOneService.send<string>('dict-refreshCount', dictId),
+    );
+    emitMsg('100%', true);
   }
 }

@@ -1,19 +1,9 @@
-import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  OneToMany,
-  Index,
-} from 'typeorm';
-import { Word } from './word.entity';
+import { Entity, Column, PrimaryGeneratedColumn, Index } from 'typeorm';
 
 @Entity()
 export class Dictionary {
   @PrimaryGeneratedColumn()
   id: number;
-
-  @OneToMany(() => Word, (word) => word.dictionary)
-  words: Word[];
 
   @Column({ nullable: true })
   count: number;
