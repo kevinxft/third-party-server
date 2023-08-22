@@ -1,27 +1,17 @@
-import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  ManyToOne,
-  Index,
-} from 'typeorm';
-import { Dictionary } from './dictionary.entity';
+import { Entity, Column, PrimaryGeneratedColumn, Index } from 'typeorm';
 import { get } from 'lodash';
 
 @Entity()
-@Index(['name', 'dictionary'], { unique: true })
+@Index(['name', 'dictId'], { unique: true })
 export class Word {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => Dictionary, (dictionary) => dictionary.words)
-  dictionary: Dictionary;
-
   @Column()
   name: string;
 
-  @Column({ nullable: true })
-  bookId: string;
+  @Column()
+  dictId: string;
 
   @Column({ nullable: true })
   ukphone: string;

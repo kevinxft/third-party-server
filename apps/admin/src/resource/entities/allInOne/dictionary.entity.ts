@@ -5,11 +5,11 @@ export class Dictionary {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ nullable: true, default: 0 })
+  @Column({ nullable: true })
   count: number;
 
-  @Column({ unique: true })
-  dictId: string;
+  @Column({ nullable: true })
+  bookId: string;
 
   @Column({ nullable: true })
   tag: string;

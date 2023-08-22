@@ -1,8 +1,7 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { DataSource } from 'typeorm';
 import { Dictionary, Word } from './entities';
 import { getValuesFormJson, formatResponse } from './entities/word.entity';
-import { get } from 'lodash';
 
 @Injectable()
 export class DictionaryService {
@@ -24,12 +23,12 @@ export class DictionaryService {
     return res > 0;
   }
 
-  async search(name: string, bookId?: string): Promise<any> {
-    const where: { name: string; bookId?: string } = {
+  async search(name: string, dictId?: string): Promise<any> {
+    const where: { name: string; dictId?: string } = {
       name: name.trim().toLowerCase(),
     };
-    if (bookId) {
-      where.bookId = bookId;
+    if (dictId) {
+      where.dictId = dictId;
     }
     const arr = await this.dataSource.getRepository(Word).find({
       where,
@@ -40,7 +39,7 @@ export class DictionaryService {
     };
   }
 
-  async addDictionary({ name, bookId, count }) {
+  async addDictionary({ name, dictId, count }) {
     const dictionary = await this.dataSource.manager.findOneBy(Dictionary, {
       name,
     });
@@ -50,14 +49,64 @@ export class DictionaryService {
     const newDictionary = Object.assign(new Dictionary(), {
       name,
       count,
-      bookId,
+      dictId,
     });
     return await this.dataSource.manager.save(newDictionary);
   }
 
-  async addOneWordToDict({ word, dict }: { word: any[]; dict: any }) {
+  async refreshCount(dictId) {
+    const count = await this.dataSource
+      .getRepository(Word)
+      .createQueryBuilder()
+      .where('dictId = :dictId', { dictId })
+      .getCount();
+    return this.updateDictionary({ dictId, count });
+  }
+
+  async updateDictionary({
+    name,
+    dictId,
+    count,
+  }: {
+    name?: string;
+    dictId: string;
+    count?: number;
+  }) {
+    const dictionaryDatasource = this.dataSource.getRepository(Dictionary);
+    if (name) {
+      const isHad = await dictionaryDatasource.findOneBy({ name });
+      if (isHad) {
+        return {
+          message: '词典名称已经存在',
+          code: HttpStatus.CONFLICT,
+        };
+      }
+    }
+
+    const dictionary = await dictionaryDatasource.findOneBy({ dictId });
+    if (!dictionary) {
+      return {
+        message: '词典ID不存在',
+        code: HttpStatus.NOT_FOUND,
+      };
+    }
+
+    if (name) {
+      dictionary.name = name;
+    }
+    if (Number.isInteger(count) && count >= 0) {
+      dictionary.count = count;
+    }
+    return await dictionaryDatasource.save(dictionary);
+  }
+
+  findDictionary(dictId: string) {
+    return this.dataSource.getRepository(Dictionary).findOneBy({ dictId });
+  }
+
+  async addOneWordToDict({ word, dictId }: { word: any[]; dictId: string }) {
     const newWord = Object.assign(new Word(), getValuesFormJson(word));
-    newWord.dictionary = dict;
+    newWord.dictId = dictId;
     try {
       await this.dataSource.manager.save(newWord);
       return `${newWord.name} 录入成功!`;
@@ -66,43 +115,14 @@ export class DictionaryService {
     }
   }
 
-  async addWordToDict(words: any[], dictionary: any) {
+  async addWordToDict(words: any[], dictId: string) {
     for (const word of words) {
       const newWord = Object.assign(new Word(), getValuesFormJson(word));
-      newWord.dictionary = dictionary;
+      newWord.dictId = dictId;
       try {
-        console.log(`录入单词 ${newWord.name}...`);
         await this.dataSource.manager.save(newWord);
       } catch (error) {
         console.log(`${newWord.name}...`);
-      }
-    }
-    return {
-      message: '完成录入',
-    };
-  }
-
-  async addDictionaryAndWords(name: string, words: any[] = []) {
-    const bookId = get(words, '0.bookId');
-    let dictionary = await this.dataSource.manager.findOneBy(Dictionary, {
-      name,
-    });
-    if (!dictionary) {
-      dictionary = Object.assign(new Dictionary(), {
-        name,
-        count: words.length,
-        bookId,
-      });
-      await this.dataSource.manager.save(dictionary);
-    }
-    for (const word of words) {
-      const newWord = Object.assign(new Word(), getValuesFormJson(word));
-      newWord.dictionary = dictionary;
-      try {
-        console.log(`录入 ${newWord.name}...`);
-        await this.dataSource.manager.save(newWord);
-      } catch (error) {
-        console.log('跳过重复');
       }
     }
     return {
