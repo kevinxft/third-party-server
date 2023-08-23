@@ -5,6 +5,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
 import { getConfig } from '../../utils';
 import { EventsModule } from './events.module';
 import { ResourceModule } from './resource/resource.module';
+import { AuthModule } from './auth/auth.module';
 const { ALL_IN_ONE } = getConfig();
 
 @Module({
@@ -20,6 +21,7 @@ const { ALL_IN_ONE } = getConfig();
     ]),
     EventsModule,
     ResourceModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
