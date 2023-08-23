@@ -5,7 +5,6 @@ import {
   WeixinUser,
   Lesson,
   Word,
-  WordBook,
   Dictionary,
   Admin,
 } from './entities/allInOne';
@@ -16,7 +15,7 @@ const { MYSQL_ALL_IN_ONE_CONFIG, MYSQL_WORD_CHIPS_CONFIG } = getConfig();
 const MYSQL_ALL_IN_ONE = new DataSource({
   ...MYSQL_ALL_IN_ONE_CONFIG,
   synchronize: true,
-  entities: [Admin, Lesson, Word, WeixinUser, WordBook, Dictionary],
+  entities: [Admin, Lesson, Word, WeixinUser, Dictionary],
 });
 
 const MYSQL_WORD_CHIPS = new DataSource({
