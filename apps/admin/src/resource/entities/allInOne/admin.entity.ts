@@ -3,7 +3,6 @@ import {
   Column,
   BeforeInsert,
   PrimaryGeneratedColumn,
-  Index,
   BeforeUpdate,
 } from 'typeorm';
 import { BcryptService } from '../../../common/bcrypt.service';
@@ -13,7 +12,6 @@ export class Admin {
   @PrimaryGeneratedColumn()
   id: string;
 
-  @Index()
   @Column({ type: 'varchar', length: 100, unique: true })
   username: string;
 
