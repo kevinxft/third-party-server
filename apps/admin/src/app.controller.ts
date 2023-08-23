@@ -13,12 +13,14 @@ import {
   Put,
   HttpException,
   HttpStatus,
+  UseGuards,
 } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { firstValueFrom } from 'rxjs';
 import { throttle } from 'lodash';
 import { EventsGateway } from './events.gateway';
+import { AuthGuard } from './auth/auth.guard';
 
 @Controller()
 export class AppController {
@@ -32,17 +34,20 @@ export class AppController {
     return 'admin server is running';
   }
 
+  @UseGuards(AuthGuard)
   @Get('dict/search')
   async search(@Query() query: any) {
     const data = await this.allInOneService.send<string>('search', query);
     return data;
   }
 
+  @UseGuards(AuthGuard)
   @Get('dict/list')
   async getDictionaryList() {
     return await this.allInOneService.send<string>('dict-list', '');
   }
 
+  @UseGuards(AuthGuard)
   @Post('dict/add')
   async addDictionary(@Body() body: any) {
     const { name, dictId } = body;
@@ -52,6 +57,7 @@ export class AppController {
     });
   }
 
+  @UseGuards(AuthGuard)
   @Put('dict/update')
   async updateDictionary(@Body() body: any) {
     const res = await firstValueFrom(
@@ -63,6 +69,7 @@ export class AppController {
     return res;
   }
 
+  @UseGuards(AuthGuard)
   @Post('dict/upload')
   @UseInterceptors(FileInterceptor('file'))
   async uploadFile(
@@ -77,7 +84,6 @@ export class AppController {
     file: Express.Multer.File,
     @Body('dictId') dictId: string,
   ) {
-    console.log(dictId);
     const dict = await firstValueFrom(
       this.allInOneService.send<any>('dict-findByDictId', dictId),
     );

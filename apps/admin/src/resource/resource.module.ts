@@ -7,5 +7,6 @@ import { DatabaseModule } from './database.module';
   imports: [DatabaseModule],
   controllers: [ResourceController],
   providers: [ResourceService],
+  exports: [ResourceService],
 })
 export class ResourceModule {}
