@@ -62,7 +62,7 @@ export class ResourceService {
       throw new HttpException('数据库不存在', HttpStatus.NOT_FOUND);
     }
     const dataSource = this[database];
-    const { limit = 20, page = 1 } = query;
+    const { pageSize = 20, page = 1 } = query;
     const total = await dataSource
       .createQueryBuilder()
       .from(MAP[name], name)
@@ -70,8 +70,8 @@ export class ResourceService {
     const items = await dataSource
       .createQueryBuilder()
       .from(MAP[name], name)
-      .offset((page - 1) * limit)
-      .limit(limit)
+      .offset((page - 1) * pageSize)
+      .limit(pageSize)
       .execute();
     return {
       items,
