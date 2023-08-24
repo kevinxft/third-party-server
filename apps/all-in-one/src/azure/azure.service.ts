@@ -42,7 +42,7 @@ export class AzureService {
       // TODO: 优化这里
       const payload = {
         name: text,
-        bookId: 'azure',
+        dictId: 'azure',
         synos: JSON.stringify(
           res[0]?.translations.map((item) => {
             const pos = item.posTag.toLowerCase();
