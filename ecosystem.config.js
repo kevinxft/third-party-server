@@ -1,7 +1,4 @@
 const ENV_CONFIG = {
-  env_test: {
-    ENV: 'test',
-  },
   env_pro: {
     ENV: 'pro',
   },
