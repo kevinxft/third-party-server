@@ -5,8 +5,9 @@ import {
   Delete,
   Query,
   UseGuards,
-  Patch,
   Req,
+  Put,
+  Post,
 } from '@nestjs/common';
 import { ResourceService } from './resource.service';
 import { AuthGuard } from '../auth/auth.guard';
@@ -37,7 +38,7 @@ export class ResourceController {
   }
 
   @UseGuards(AuthGuard, ResourceGuard)
-  @Delete('/:database/:name/:id')
+  @Delete('/:database/:table/:id')
   remove(
     @Param('database') database: string,
     @Param('table') table: string,
@@ -47,7 +48,7 @@ export class ResourceController {
   }
 
   @UseGuards(AuthGuard, ResourceGuard)
-  @Patch('/:database/:name/:id')
+  @Put('/:database/:table/:id')
   update(
     @Req() body,
     @Param('database') database: string,
@@ -58,7 +59,7 @@ export class ResourceController {
   }
 
   @UseGuards(AuthGuard, ResourceGuard)
-  @Patch('/:database/:name/')
+  @Post('/:database/:table')
   create(
     @Req() body,
     @Param('database') database: string,
