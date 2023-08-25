@@ -5,8 +5,8 @@ import {
   Delete,
   Query,
   UseGuards,
-  Req,
-  Put,
+  Body,
+  Patch,
   Post,
 } from '@nestjs/common';
 import { ResourceService } from './resource.service';
@@ -48,9 +48,9 @@ export class ResourceController {
   }
 
   @UseGuards(AuthGuard, ResourceGuard)
-  @Put('/:database/:table/:id')
+  @Patch('/:database/:table/:id')
   update(
-    @Req() body,
+    @Body() body,
     @Param('database') database: string,
     @Param('table') table: string,
     @Param('id') id: string,
@@ -61,7 +61,7 @@ export class ResourceController {
   @UseGuards(AuthGuard, ResourceGuard)
   @Post('/:database/:table')
   create(
-    @Req() body,
+    @Body() body,
     @Param('database') database: string,
     @Param('table') table: string,
   ) {

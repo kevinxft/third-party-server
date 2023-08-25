@@ -8,7 +8,6 @@ export class WeixinController {
 
   @MessagePattern('wx-login')
   login(body) {
-    console.log(body);
     return this.weixinService.login(body);
   }
 }
