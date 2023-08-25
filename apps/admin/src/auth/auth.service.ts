@@ -41,10 +41,8 @@ export class AuthService {
   }
 
   async signIn(body) {
-    console.log(body);
     const { username, password } = body;
     const admin = await this.resourceService.findAdminByUserName(username);
-    console.log(admin);
     if (!admin) {
       throw new HttpException('用户不能存在', HttpStatus.NOT_FOUND);
     }

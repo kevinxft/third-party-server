@@ -3,6 +3,7 @@ import { DataSource } from 'typeorm';
 import { databaseMap } from './entities';
 
 const ADMIN = databaseMap['allInOne']['admin'];
+
 @Injectable()
 export class ResourceService {
   constructor(
@@ -58,9 +59,6 @@ export class ResourceService {
 
   async getList(database: string, name: string, query: any) {
     const MAP = databaseMap[database];
-    if (!MAP) {
-      throw new HttpException('数据库不存在', HttpStatus.NOT_FOUND);
-    }
     const dataSource = this[database];
     const { pageSize = 20, page = 1 } = query;
     const total = await dataSource
@@ -77,5 +75,51 @@ export class ResourceService {
       items,
       total,
     };
+  }
+
+  async create(database: string, name: string, body: any) {
+    const MAP = databaseMap[database];
+    const dataSource = this[database];
+    const item = await dataSource
+      .createQueryBuilder()
+      .insert()
+      .into(MAP[name])
+      .values(body)
+      .execute();
+    return item;
+  }
+
+  async update(database: string, name: string, id: number, body: any) {
+    const MAP = databaseMap[database];
+    const dataSource = this[database];
+    return await dataSource
+      .createQueryBuilder()
+      .update(MAP[name])
+      .where(`id = :id`, { id })
+      .set(body)
+      .execute();
+  }
+
+  async getOne(database: string, name: string, id: number) {
+    const MAP = databaseMap[database];
+    const dataSource = this[database];
+    const item = await dataSource
+      .createQueryBuilder()
+      .from(MAP[name], name)
+      .where(`id = :id`, { id })
+      .getOne();
+    return item;
+  }
+
+  async remove(database: string, name: string, id: number) {
+    const MAP = databaseMap[database];
+    const dataSource = this[database];
+    const item = await dataSource
+      .createQueryBuilder()
+      .delete()
+      .from(MAP[name], name)
+      .where(`id = :id`, { id })
+      .execute();
+    return item;
   }
 }
