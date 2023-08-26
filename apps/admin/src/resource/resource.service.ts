@@ -57,20 +57,28 @@ export class ResourceService {
     );
   }
 
+  private appendWhere(sql, query) {
+    const keys = Object.keys(query);
+    const where = keys.map((key) => `${key} = :${key}`);
+    return sql.where(where.join(' AND '), query);
+  }
+
   async getList(database: string, name: string, query: any) {
     const MAP = databaseMap[database];
     const dataSource = this[database];
-    const { pageSize = 20, page = 1 } = query;
+    delete query._t;
+    const { pageSize = 20, page = 1, ...rest } = query;
     const total = await dataSource
       .createQueryBuilder()
       .from(MAP[name], name)
       .getCount();
-    const items = await dataSource
+    let sql = await dataSource
       .createQueryBuilder()
       .from(MAP[name], name)
       .offset((page - 1) * pageSize)
-      .limit(pageSize)
-      .execute();
+      .limit(pageSize);
+    sql = this.appendWhere(sql, rest);
+    const items = await sql.execute();
     return {
       items,
       total,
